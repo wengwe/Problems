@@ -2,6 +2,8 @@ package MaxPointsAtLine;
 
 import java.util.*;
 
+import static java.lang.Math.abs;
+
 /**
  * User: Jason Weng
  */
@@ -19,7 +21,7 @@ class Line{
     private final double a;
     private final double b;
     private final boolean isVertical;
-    private static final double PRECISION = Double.valueOf("1.0E-10");
+    private static final double PRECISION = Double.valueOf("1.0E-15");
 
     Line(double a, double b, boolean isVertical) {
         this.a = a;
@@ -31,7 +33,7 @@ class Line{
         if(isVertical) return p.x == a;
         else {
             double r = a * p.x + b  - p.y;
-            return  (r  < PRECISION);
+            return  (abs(r)  < PRECISION);
         }
     }
 }
