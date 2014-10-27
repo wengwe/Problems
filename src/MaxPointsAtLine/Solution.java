@@ -21,7 +21,7 @@ class Line{
     private final double a;
     private final double b;
     private final boolean isVertical;
-    private static final double PRECISION = Double.valueOf("1.0E-15");
+    private static final double PRECISION = Double.valueOf("1.0E-10");
 
     Line(double a, double b, boolean isVertical) {
         this.a = a;
@@ -124,16 +124,17 @@ public class Solution {
 
 
     private Line resolveLineRepresentation(PointForHashMap p1, PointForHashMap p2){
+
+        if(p1.equals(p2)) return null;
+
         double xDistance = p2.x - p1.x;
         double yDistance = p2.y - p1.y;
-        if(xDistance == 0 && yDistance == 0) return null;
-
         if(xDistance == 0)   {
             return new Line(p1.x,0, true);
         }
 
         double a = yDistance / xDistance;
-        double b = p2.y - p2.x*a;
+        double b = p2.y - p2.x* a;
         return new Line(a,b, false);
 
     }
