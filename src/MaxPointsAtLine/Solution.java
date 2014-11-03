@@ -1,5 +1,7 @@
 package MaxPointsAtLine;
 
+import com.google.common.collect.Lists;
+
 import java.util.*;
 
 import static java.lang.Math.abs;
@@ -36,6 +38,15 @@ class Line{
             return  (abs(r)  < PRECISION);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Line{" +
+                "a=" + a +
+                ", b=" + b +
+                ", isVertical=" + isVertical +
+                '}';
+    }
 }
 
 class PointForHashMap {
@@ -62,6 +73,14 @@ class PointForHashMap {
         result = 31 * result + y;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
 
 public class Solution {
@@ -87,11 +106,13 @@ public class Solution {
         if(uniquePointsNumber == 1) return   pointMap.get(uniquePoints.get(0));
 
         Map<Line, Integer> lineMap = new HashMap<Line,Integer>();
+        Map<Line, List<PointForHashMap>> linePointMap = new HashMap<Line,List<PointForHashMap>>();
+
         PointForHashMap p1 =  uniquePoints.get(0);
         PointForHashMap p2 =  uniquePoints.get(1);
         Line line1 = resolveLineRepresentation(p1, p2);
         if(line1 != null) lineMap.put(line1, pointMap.get(p1)+pointMap.get(p2));
-
+        if(line1 != null) linePointMap.put(line1, Lists.newArrayList(p1,p2));
 
 
         for(int i=2; i < uniquePointsNumber ;i++){
@@ -102,6 +123,11 @@ public class Solution {
                     int count = lineMap.get(line);
                     count += pointMap.get(p);
                     lineMap.put(line, count);
+
+                    List<PointForHashMap> l = linePointMap.get(line);
+                    l.add(p);
+                    linePointMap.put(line,l);
+
                     pointOnExistingLine = true;
                     break;
                 }
@@ -112,12 +138,18 @@ public class Solution {
                     PointForHashMap pToCheck = uniquePoints.get(j);
                     Line line = resolveLineRepresentation(pToCheck, p);
                     if(line != null) lineMap.put(line, pointMap.get(pToCheck)+pointMap.get(p));
+                    linePointMap.put(line, Lists.newArrayList(p,pToCheck));
                 }
 
             }
         }
 
-
+       /* for(Line line: linePointMap.keySet())  {
+                  List<PointForHashMap> l = linePointMap.get(line);
+                  System.out.println(l);
+                  System.out.println(l.size());
+                  System.out.println(lineMap.get(l));
+        }*/
         return Collections.max(lineMap.values());
     }
 
