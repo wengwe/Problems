@@ -103,7 +103,7 @@ public class Solution {
                     count += pointMap.get(p);
                     lineMap.put(line, count);
                     pointOnExistingLine = true;
-                    break;
+
                 }
             }
             //if not on previous line. then each point pair should form a new line.
